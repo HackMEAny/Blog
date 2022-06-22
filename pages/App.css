@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+}
+.imageHover {
+  position: relative;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: transform 350ms ease-in-out;
+  cursor: pointer;
+}
+.imageHover:hover {
+  transform: scale(1.07);
+}
