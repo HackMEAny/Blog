@@ -21,7 +21,7 @@ export default class App extends Component {
           />
 
           <Navbar />
-          <ActionAreaCard />
+          <ActionAreaCard posts={posts} />
           <h1>asdasd asd aadasd aasdasd asdasdasd asdasdasd</h1>
           <h1>asdasd asd aadasd aasdasd asdasdasd asdasdasd</h1>
           <h1>asdasd asd aadasd aasdasd asdasdasd asdasdasd</h1>

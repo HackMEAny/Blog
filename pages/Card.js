@@ -1,9 +1,8 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
   Avatar,
   Button,
   CardActionArea,
@@ -16,13 +15,11 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { Box, positions } from "@mui/system";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ShareTwoToneIcon from "@mui/icons-material/ShareTwoTone";
-import AddIcon from "@mui/icons-material/Add";
 
 import backimg from "./assets/back.jpg";
 
-const CardExample = () => {
+export const CardExample = (url) => {
   return (
     <Card
       sx={{
@@ -82,9 +79,9 @@ const CardExample = () => {
               6,000 species, ranging across all continents except Antarctica
             </Typography>
             {/* </Stack> */}
-            {/* <Button href="/" variant="contained" color="primary">
+            <Button href={"/blog/" + url} variant="contained" color="primary">
               Read More
-            </Button> */}
+            </Button>
           </CardContent>
           <CardActions>
             <Stack
@@ -138,33 +135,55 @@ const CardExample = () => {
     </Card>
   );
 };
-export default function ActionAreaCard() {
-  return (
-    <>
-      <Grid
-        container
-        spacing={8}
-        justifyContent="space-around"
-        alignItems="center"
-        direction="row"
-        sx={{ p: 5, flexGrow: 1 }}
-      >
-        <Grid item xs={12} md={6} lg={3}>
-          <CardExample />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <CardExample />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <CardExample />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <CardExample />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <CardExample />
-        </Grid>
-      </Grid>
-    </>
-  );
-}
+// export const getStaticProps = async () => {
+//   const files = fs.readdirSync(path.join("posts"));
+//   console.log(files);
+//   const posts = files.map((filename) => {
+//     const markdownWithMeta = fs.readFileSync(path.join("posts", filename));
+
+//     const { data: frontMatter } = matter(markdownWithMeta);
+
+//     return {
+//       frontMatter,
+//       slug: filename.split(".")[0],
+//     };
+//   });
+//   console.log(posts);
+//   return {
+//     props: {
+//       posts,
+//     },
+//   };
+// };
+// export default function ActionAreaCard({ posts }) {
+//   return (
+//     <>
+//       <Grid
+//         container
+//         spacing={8}
+//         justifyContent="space-around"
+//         alignItems="center"
+//         direction="row"
+//         sx={{ p: 5, flexGrow: 1 }}
+//       >
+//         {posts.map((post, index) => (
+//           <Grid item key={index} xs={12} md={6} lg={3}>
+//             <CardExample url={post.slug} />
+//           </Grid>
+//         ))}
+//         {/* <Grid item xs={12} md={6} lg={3}>
+//           <CardExample />
+//         </Grid>
+//         <Grid item xs={12} md={6} lg={3}>
+//           <CardExample />
+//         </Grid>
+//         <Grid item xs={12} md={6} lg={3}>
+//           <CardExample />
+//         </Grid>
+//         <Grid item xs={12} md={6} lg={3}>
+//           <CardExample />
+//         </Grid> */}
+//       </Grid>
+//     </>
+//   );
+// }
