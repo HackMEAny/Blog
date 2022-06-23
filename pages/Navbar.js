@@ -1,9 +1,9 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Drawer,
-  useMediaQuery,
-  Block,
   Typography,
   Stack,
   IconButton,
@@ -11,23 +11,96 @@ import {
   Toolbar,
   Box,
   AppBar,
+  Fab,
 } from "@mui/material";
-import theme from "./theme.js";
+import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
+
+import Link from "next/link";
+
+import { motion } from "framer-motion";
+
+// Custom navbar button (Desktop)
+const StyledButtonDesktop = (props) => (
+  <Link href={props.link}>
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <Button
+        color="secondary"
+        disableRipple
+        disableFocusRipple
+        sx={{
+          backgroundColor: "transparent",
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
+        {props.children}
+      </Button>
+    </motion.div>
+  </Link>
+);
+
+// Custom navbar button (Mobile)
+const StyledButtonMobile = (props) => (
+  <Link href={props.link}>
+    <motion.div whileTap={{ scale: 0.8 }}>
+      <Button color="secondary" disableRipple>
+        {props.children}
+      </Button>
+    </motion.div>
+  </Link>
+);
 
 export default function Navbar() {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     drawerOpen: false,
   });
   const { drawerOpen } = state;
+
   const handleDrawerOpen = () =>
     setState((prevState) => ({ ...prevState, drawerOpen: true }));
+
   const handleDrawerClose = () =>
     setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+  // Section Start : Controlling the navbar behaviour
+  const [clientWindowHeight, setClientWindowHeight] = useState("");
+  const [backgroundTransparacy, setBackgroundTransparacy] = useState(0);
+  const [padding, setPadding] = useState(30);
+  const [boxShadow, setBoxShadow] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
+  const handleScroll = () => {
+    setClientWindowHeight(window.scrollY);
+  };
+
+  useEffect(() => {
+    let backgroundTransparacyVar = clientWindowHeight / 600;
+
+    if (backgroundTransparacyVar < 1) {
+      let paddingVar = 15 - backgroundTransparacyVar * 20;
+      let boxShadowVar = backgroundTransparacyVar * 0.1;
+      setBackgroundTransparacy(backgroundTransparacyVar);
+      setPadding(paddingVar);
+      setBoxShadow(boxShadowVar);
+    }
+  }, [clientWindowHeight]);
+  // Section End : Controlling the navbar behaviour
+
   return (
     <>
       {/* Desktop navbar */}
       <AppBar
         sx={{
+          top: {
+            md: 0,
+            lg: 0,
+            xl: -1,
+          },
           display: {
             xs: "none",
             sm: "none",
@@ -35,30 +108,21 @@ export default function Navbar() {
             lg: "flex",
             xl: "flex",
           },
-        }}
-        position="sticky"
-        style={{
-          background: "transparent",
-          // boxShadow: "none",
+          background: `rgba(255, 255, 255, ${backgroundTransparacy / 2})`,
+          padding: `${padding}px 0px`,
+          boxShadow: `rgb(0 0 0 / ${boxShadow}) 0px 0px 20px 6px`,
           marginTop: "-50px",
           backdropFilter: "blur(20px)",
         }}
+        position="sticky"
         enableColorOnDark={true}
       >
         <Toolbar>
-          <Button color="inherit" href="/">
-            Home
-          </Button>
-          <Button color="inherit" href="/">
-            Tag
-          </Button>
-          <Button color="inherit" href="/">
-            Author
-          </Button>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            {/* Help */}
-          </Typography>
-          <Button color="inherit">About</Button>
+          <StyledButtonDesktop link="/">Home</StyledButtonDesktop>
+          <StyledButtonDesktop link="/Tag">Tag</StyledButtonDesktop>
+          <StyledButtonDesktop link="/Author">Author</StyledButtonDesktop>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}></Typography>
+          <StyledButtonDesktop link="/About">About</StyledButtonDesktop>
         </Toolbar>
       </AppBar>
 
@@ -73,10 +137,9 @@ export default function Navbar() {
             lg: "none",
             xl: "none",
           },
-        }}
-        style={{
-          background: "transparent",
-          // boxShadow: "none",
+          background: `rgba(255, 255, 255, ${backgroundTransparacy / 2})`,
+          padding: `${padding}px 0px`,
+          boxShadow: `rgb(0 0 0 / ${boxShadow}) 0px 0px 20px 6px`,
           marginTop: "-50px",
           backdropFilter: "blur(20px)",
         }}
@@ -94,10 +157,24 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Drawer
+            transitionDuration={800}
             {...{
               anchor: "left",
               open: drawerOpen,
               onClose: handleDrawerClose,
+              BackdropProps: {
+                sx: {
+                  backdropFilter: "blur(20px)",
+                },
+              },
+              sx: {
+                ...{
+                  [`& .MuiDrawer-paper`]: {
+                    width: "100%",
+                    bgcolor: "transparent",
+                  },
+                },
+              },
             }}
           >
             <Stack
@@ -105,25 +182,30 @@ export default function Navbar() {
                 flexGrow: 1,
                 justifyContent: "center",
                 flexDirection: "column",
+                alignItems: "center",
                 m: 16,
-                // p: 8,
-                color: "inherit",
               }}
               spacing={3}
               direction="column"
             >
-              <Button color="inherit" href="/">
-                Home
-              </Button>
-              <Button color="inherit" href="/">
-                Tag
-              </Button>
-              <Button color="inherit" href="/">
-                Author
-              </Button>
-
-              <Button color="inherit">About</Button>
+              <StyledButtonMobile link="/">Home</StyledButtonMobile>
+              <StyledButtonMobile link="/Tag">Tag</StyledButtonMobile>
+              <StyledButtonMobile link="/Author">Author</StyledButtonMobile>
+              <StyledButtonMobile link="/About">About</StyledButtonMobile>
             </Stack>
+
+            <Box
+              sx={{
+                display: "flex",
+                "& > :not(style)": { mb: 5 },
+                positions: "absolute",
+                justifyContent: "center",
+              }}
+            >
+              <Fab color="secondary" onClick={handleDrawerClose}>
+                <ClearRoundedIcon fontSize="large" />
+              </Fab>
+            </Box>
           </Drawer>
           <Typography
             variant="h6"

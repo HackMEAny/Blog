@@ -1,14 +1,11 @@
 body {
   margin: 0;
 }
-.imageHover {
-  position: relative;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
+
+.img {
   transition: transform 350ms ease-in-out;
-  cursor: pointer;
 }
-.imageHover:hover {
+
+.cardWrapper:hover .img {
   transform: scale(1.07);
 }

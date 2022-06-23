@@ -1,9 +1,8 @@
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 
 // import App from "./App";
 import theme from "./theme";
@@ -13,6 +12,8 @@ import { CardExample } from "./Card";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
+
+import { motion } from "framer-motion";
 
 import backimg from "./assets/back.jpg";
 
@@ -44,33 +45,31 @@ export const getStaticProps = async () => {
 export default function Home({ posts }) {
   return (
     <ThemeProvider theme={theme}>
-      <Stack bgcolor="white" direction="column" sx={{ width: "100%" }}>
-        <Image
-          src={backimg}
-          alt="background"
-          // layout="intrinsic"
-          width="1000vw"
-          height="400vh"
-        />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <Stack bgcolor="white" direction="column" sx={{ width: "100%" }}>
+          <Image src={backimg} alt="background" height="400vh" />
 
-        <Navbar />
-        <Grid
-          container
-          spacing={8}
-          justifyContent="space-around"
-          alignItems="center"
-          direction="row"
-          sx={{ p: 5, flexGrow: 1 }}
-        >
-          {posts.map((post, index) => (
-            <Link href={"/blog/" + post.slug} passHref key={index}>
-              <Grid item xs={12} md={6} lg={3}>
-                <CardExample />
-              </Grid>
-            </Link>
-          ))}
-        </Grid>
-      </Stack>
+          <Navbar />
+          <Box display="flex" justifyContent="center" sx={{ m: 3 }}>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 4, lg: 1, xl: 3 }}
+              justifyContent="space-around"
+              alignItems="center"
+              direction="row"
+              sx={{ flexGrow: 1 }}
+            >
+              {posts.map((post, index) => (
+                <Link href={"/blog/" + post.slug} passHref key={index}>
+                  <Grid item sx={{ p: 0 }}>
+                    <CardExample />
+                  </Grid>
+                </Link>
+              ))}
+            </Grid>
+          </Box>
+        </Stack>
+      </motion.div>
     </ThemeProvider>
   );
 }
