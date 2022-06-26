@@ -45,7 +45,11 @@ export const getStaticProps = async () => {
 export default function Home({ posts }) {
   return (
     <ThemeProvider theme={theme}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <motion.div
+        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         <Stack bgcolor="white" direction="column" sx={{ width: "100%" }}>
           <Image src={backimg} alt="background" height="400vh" />
 
