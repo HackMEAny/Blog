@@ -24,7 +24,9 @@ const Animate = {
   },
 };
 
-export const CardExample = (url) => {
+export const CardExample = (props) => {
+  const title = props.frontMatter.frontMatter.title;
+  const thumbnailUrl = props.frontMatter.frontMatter.thumbnailUrl;
   return (
     <motion.div
       initial={"offscreen"}
@@ -61,7 +63,8 @@ export const CardExample = (url) => {
             <CardActionArea sx={{ mt: -9 }}>
               <Image
                 className="img"
-                src="https://source.unsplash.com/random"
+                src={thumbnailUrl}
+                // src="https://source.unsplash.com/random"
                 alt="back"
                 width={800}
                 height={500}

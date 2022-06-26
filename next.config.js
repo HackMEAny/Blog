@@ -5,6 +5,6 @@ const nextConfig = {
 module.exports = nextConfig;
 module.exports = {
   images: {
-    domains: ["source.unsplash.com"],
+    domains: ["source.unsplash.com", "raw.githubusercontent.com"],
   },
 };

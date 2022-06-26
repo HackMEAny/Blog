@@ -4,17 +4,12 @@ import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { MDXRemote } from "next-mdx-remote";
+import { Container, Stack } from "@mui/material";
+import Image from "next/image";
+import Navbar from "../Navbar";
 
 const components = { SyntaxHighlighter };
 
-const PostPage = ({ frontMatter: { title, date }, mdxSource }) => {
-  return (
-    <>
-      <h1>{title}</h1>
-      <MDXRemote {...mdxSource} components={components} />
-    </>
-  );
-};
 const getStaticPaths = async () => {
   const files = fs.readdirSync(path.join("posts"));
   const paths = files.map((filename) => ({
@@ -44,5 +39,33 @@ const getStaticProps = async ({ params: { slug } }) => {
   };
 };
 
+const PostPage = ({ frontMatter, mdxSource }) => {
+  const title = frontMatter.title;
+  const date = frontMatter.date;
+  const image = frontMatter.thumbnailUrl;
+  const description = frontMatter.description;
+  const tags = frontMatter.tags;
+  return (
+    <>
+      <Navbar />
+      <Stack>
+        <Container>
+          <Image
+            src={image}
+            alt="background"
+            layout="intrinsic"
+            width={1200}
+            height={800}
+          />
+        </Container>
+        <h2 style={{ marginTop: "70px" }}>{title}</h2>
+        <h5> Written in {date}</h5>
+        <p>{description}</p>
+        <MDXRemote {...mdxSource} components={components} />
+        {/* </div> */}
+      </Stack>
+    </>
+  );
+};
 export { getStaticPaths, getStaticProps };
 export default PostPage;

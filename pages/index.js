@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Container, Grid, Stack } from "@mui/material";
 
 // import App from "./App";
 import theme from "./theme";
@@ -62,7 +62,7 @@ export default function Home({ posts }) {
               {posts.map((post, index) => (
                 <Link href={"/blog/" + post.slug} passHref key={index}>
                   <Grid item sx={{ p: 0 }}>
-                    <CardExample />
+                    <CardExample frontMatter={post} />
                   </Grid>
                 </Link>
               ))}
