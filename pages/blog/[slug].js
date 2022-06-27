@@ -3,18 +3,14 @@ import path from "path";
 import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import mdxPrism from "mdx-prism";
-import rehypePrism from "@mapbox/rehype-prism";
-// import SyntaxHighlighter from "react-syntax-highlighter";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrism from "rehype-prism-plus";
 import { Container, Stack } from "@mui/material";
 import Image from "next/image";
 
 import Navbar from "../Navbar";
 import custom from "../Custom";
-// import rehype from "rehype";
-// import rehypeHighlight from "rehype-highlight";
-// const comp = { SyntaxHighlighter };
-// const custom = { custom };
 
 export async function getStaticPaths() {
   const files = fs.readdirSync(path.join("posts"));
@@ -37,8 +33,11 @@ export async function getStaticProps({ params: { slug } }) {
   const { data: frontMatter, content } = matter(markdownWithMeta);
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [require("remark-prism")],
-      rehypePlugins: [mdxPrism],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behaviour: "wrap" }],
+        [rehypePrism, { showLineNumbers: true }],
+      ],
     },
   });
   return {

@@ -12,7 +12,7 @@ const custom = {
   h6: (props) => <Typography {...props} variant="h6" />,
   p: (props) => <Typography {...props} variant="body1" />,
   p2: (props) => <Typography {...props} variant="body2" />,
-  hr: (props) => <Divider {...props} varient="full" />,
+  hr: (props) => <Divider {...props} variant="full" />,
   hr1: (props) => Hr,
 };
 export default custom;
